@@ -1,0 +1,49 @@
+#!/bin/sh
+
+
+#if [ -e flat ]
+#then
+#    echo "directory flat exists"
+#else
+#    mkdir flat
+#fi
+
+
+#files=`ls hw3-data/*.iv`
+#for i in range(100):
+#do
+#	echo "Hi"
+#    #base=`basename $i .iv`
+#    #echo "shaded 0 400 400 < $i 1> flat/$base.ppm 2> flat/$base.debug"
+#    #shaded 0 400 400 < $i 1> flat/$base.ppm 2> flat/$base.debug
+#done
+
+for (( counter = 0; counter <= 100; counter++ ))
+do
+    if (( counter % 10 == 0 ))
+    then
+            echo "$(( counter / 10 ))"
+            OUTPUT=$(./libsvm-3.17/svm-train -t 1 -d 2 -g 1 -r 1 -v 10 -c 0.0001 1vs5.train 1vs5.train.001.CV.model 2>&1 | tail -1) # >>logfle
+            echo $OUTPUT
+            a=($OUTPUT)
+			echo ${a[4]}
+			b=(${a[4]})
+			c=(${b%?})
+			echo $c
+
+			#hours=$((seconds / 3600))
+			#a5=$(({a[4]} / 100 ))
+			#echo $a5
+			echo "$c + 1.01" | bc
+			if (($c | bc > 99.0))
+			then
+				echo "Hi"
+			fi
+			echo $((c-12.0))
+
+            sleep 0.5
+            #./libsvm-3.17/svm-train -t 1 -d 2 -g 1 -r 1 -v 10 -c 0.1 1vs5.train 1vs5.train.001.CV.model
+    fi
+    #./libsvm-3.17/svm-train -t 1 -d 2 -g 1 -r 1 -v 10 -c 0.1 1vs5.train 1vs5.train.001.CV.model
+    #echo "Hi"
+done
